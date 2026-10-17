@@ -1,0 +1,29 @@
+{
+  "name": "garage-stack",
+  "version": "0.1.0",
+  "description": "3D parking-jam puzzle game for Android",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p32nicky/garage-stack.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/p32nicky/garage-stack/issues"
+  },
+  "homepage": "https://github.com/p32nicky/garage-stack#readme",
+  "devDependencies": {
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  },
+  "private": true,
+  "type": "module"
+}
