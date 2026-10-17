@@ -7,4 +7,5 @@ npm install
 npm test        # run the rules and solver tests
 npm run dev     # local dev server
 npm run build   # typecheck + production build
+npm run levels  # regenerate the 120-level pack in src/levels/pack (takes several minutes)
 ```

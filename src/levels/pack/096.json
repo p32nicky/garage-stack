@@ -1,0 +1,396 @@
+{
+  "id": "096",
+  "name": "Level 96",
+  "par": 13,
+  "difficulty": 19.6,
+  "floors": [
+    {
+      "width": 6,
+      "height": 6,
+      "walls": [
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "walls": [
+        [
+          3,
+          2
+        ]
+      ]
+    }
+  ],
+  "exit": {
+    "floor": 0,
+    "x": 1,
+    "y": 5,
+    "dir": "down"
+  },
+  "vehicles": [
+    {
+      "id": "P",
+      "kind": "player",
+      "floor": 1,
+      "x": 2,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "A",
+      "kind": "truck",
+      "floor": 0,
+      "x": 3,
+      "y": 3,
+      "facing": "up"
+    },
+    {
+      "id": "B",
+      "kind": "truck",
+      "floor": 0,
+      "x": 4,
+      "y": 2,
+      "facing": "down"
+    },
+    {
+      "id": "C",
+      "kind": "car",
+      "floor": 1,
+      "x": 4,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "D",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 2,
+      "facing": "up"
+    },
+    {
+      "id": "F",
+      "kind": "car",
+      "floor": 1,
+      "x": 2,
+      "y": 4,
+      "facing": "right"
+    },
+    {
+      "id": "G",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 3,
+      "facing": "down"
+    },
+    {
+      "id": "H",
+      "kind": "car",
+      "floor": 0,
+      "x": 3,
+      "y": 1,
+      "facing": "up"
+    },
+    {
+      "id": "I",
+      "kind": "car",
+      "floor": 0,
+      "x": 5,
+      "y": 0,
+      "facing": "up"
+    },
+    {
+      "id": "J",
+      "kind": "car",
+      "floor": 1,
+      "x": 5,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "K",
+      "kind": "car",
+      "floor": 1,
+      "x": 3,
+      "y": 3,
+      "facing": "left"
+    },
+    {
+      "id": "L",
+      "kind": "car",
+      "floor": 1,
+      "x": 0,
+      "y": 2,
+      "facing": "up"
+    },
+    {
+      "id": "M",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "N",
+      "kind": "car",
+      "floor": 1,
+      "x": 0,
+      "y": 0,
+      "facing": "left"
+    },
+    {
+      "id": "O",
+      "kind": "car",
+      "floor": 1,
+      "x": 1,
+      "y": 1,
+      "facing": "up"
+    },
+    {
+      "id": "Q",
+      "kind": "car",
+      "floor": 1,
+      "x": 1,
+      "y": 3,
+      "facing": "down"
+    },
+    {
+      "id": "R",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 5,
+      "facing": "left"
+    },
+    {
+      "id": "S",
+      "kind": "car",
+      "floor": 0,
+      "x": 1,
+      "y": 2,
+      "facing": "left"
+    },
+    {
+      "id": "T",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 0,
+      "facing": "down"
+    },
+    {
+      "id": "U",
+      "kind": "car",
+      "floor": 1,
+      "x": 2,
+      "y": 5,
+      "facing": "right"
+    },
+    {
+      "id": "V",
+      "kind": "car",
+      "floor": 1,
+      "x": 5,
+      "y": 1,
+      "facing": "up"
+    },
+    {
+      "id": "W",
+      "kind": "car",
+      "floor": 1,
+      "x": 4,
+      "y": 0,
+      "facing": "left"
+    },
+    {
+      "id": "X",
+      "kind": "car",
+      "floor": 0,
+      "x": 3,
+      "y": 0,
+      "facing": "left"
+    },
+    {
+      "id": "Y",
+      "kind": "tow",
+      "floor": 1,
+      "x": 0,
+      "y": 5,
+      "facing": "right"
+    },
+    {
+      "id": "Z",
+      "kind": "tow",
+      "floor": 0,
+      "x": 5,
+      "y": 2,
+      "facing": "down"
+    },
+    {
+      "id": "a",
+      "kind": "motorcycle",
+      "floor": 1,
+      "x": 3,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "b",
+      "kind": "motorcycle",
+      "floor": 0,
+      "x": 1,
+      "y": 5,
+      "facing": "left"
+    },
+    {
+      "id": "c",
+      "kind": "motorcycle",
+      "floor": 1,
+      "x": 0,
+      "y": 4,
+      "facing": "left"
+    },
+    {
+      "id": "d",
+      "kind": "motorcycle",
+      "floor": 0,
+      "x": 2,
+      "y": 5,
+      "facing": "left"
+    },
+    {
+      "id": "e",
+      "kind": "motorcycle",
+      "floor": 0,
+      "x": 4,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "f",
+      "kind": "motorcycle",
+      "floor": 1,
+      "x": 3,
+      "y": 0,
+      "facing": "down"
+    },
+    {
+      "id": "g",
+      "kind": "motorcycle",
+      "floor": 1,
+      "x": 0,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "h",
+      "kind": "motorcycle",
+      "floor": 1,
+      "x": 5,
+      "y": 3,
+      "facing": "up"
+    }
+  ],
+  "ramps": [
+    {
+      "a": {
+        "floor": 1,
+        "x": 2,
+        "y": 5,
+        "dir": "down"
+      },
+      "b": {
+        "floor": 0,
+        "x": 1,
+        "y": 0,
+        "dir": "up"
+      }
+    }
+  ],
+  "solution": [
+    {
+      "type": "slide",
+      "vehicle": "D",
+      "dir": "up",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "K",
+      "dir": "left",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "C",
+      "dir": "up",
+      "distance": 3
+    },
+    {
+      "type": "slide",
+      "vehicle": "F",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "K",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "M",
+      "dir": "up",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "U",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "Z",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "X",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "H",
+      "dir": "up",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "S",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "b",
+      "dir": "left",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "P",
+      "dir": "down",
+      "distance": 9
+    }
+  ]
+}

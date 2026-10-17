@@ -1,0 +1,108 @@
+{
+  "id": "007",
+  "name": "Level 7",
+  "par": 5,
+  "difficulty": 8.8,
+  "floors": [
+    {
+      "width": 6,
+      "height": 6
+    }
+  ],
+  "exit": {
+    "floor": 0,
+    "x": 2,
+    "y": 5,
+    "dir": "down"
+  },
+  "vehicles": [
+    {
+      "id": "P",
+      "kind": "player",
+      "floor": 0,
+      "x": 2,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "A",
+      "kind": "car",
+      "floor": 0,
+      "x": 3,
+      "y": 3,
+      "facing": "left"
+    },
+    {
+      "id": "B",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 3,
+      "facing": "right"
+    },
+    {
+      "id": "C",
+      "kind": "car",
+      "floor": 0,
+      "x": 3,
+      "y": 0,
+      "facing": "up"
+    },
+    {
+      "id": "D",
+      "kind": "car",
+      "floor": 0,
+      "x": 1,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "F",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 4,
+      "facing": "down"
+    },
+    {
+      "id": "G",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 4,
+      "facing": "left"
+    }
+  ],
+  "solution": [
+    {
+      "type": "slide",
+      "vehicle": "A",
+      "dir": "left",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "F",
+      "dir": "up",
+      "distance": 3
+    },
+    {
+      "type": "slide",
+      "vehicle": "A",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "G",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "P",
+      "dir": "down",
+      "distance": 3
+    }
+  ]
+}

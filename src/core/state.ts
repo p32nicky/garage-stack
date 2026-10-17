@@ -25,13 +25,22 @@ export function buildOccupancy(level: Level, state: GameState): Int16Array {
   return occ;
 }
 
-const FACING_CODE = { up: 'u', down: 'd', left: 'l', right: 'r' } as const;
+const FACING_CODE = { up: 0, right: 1, down: 2, left: 3 } as const;
 
-/** Compact string that identifies a state, for the solver's visited set. */
+/**
+ * Compact string that identifies a state, for the solver's visited set: one character for
+ * the cranes left, then one per vehicle packing floor, y, x (each under 16) and facing.
+ * Not meant to be readable; short keys keep the visited set fast.
+ */
 export function stateKey(state: GameState): string {
-  let key = String(state.cranesLeft);
-  for (const v of state.vehicles) key += `|${v.floor}${FACING_CODE[v.facing]}${v.x},${v.y}`;
-  return key;
+  const codes = new Array<number>(state.vehicles.length + 1);
+  codes[0] = state.cranesLeft;
+  state.vehicles.forEach((v, i) => {
+    codes[i + 1] = (((((v.floor << 4) | v.y) << 4) | v.x) << 2) | FACING_CODE[v.facing];
+  });
+  // Built in one call so the result is a flat string, which hashes much faster than one
+  // grown a character at a time.
+  return String.fromCharCode(...codes);
 }
 
 export function isSolved(level: Level, state: GameState): boolean {

@@ -1,0 +1,178 @@
+{
+  "id": "017",
+  "name": "Level 17",
+  "par": 10,
+  "difficulty": 15.7,
+  "floors": [
+    {
+      "width": 6,
+      "height": 6
+    }
+  ],
+  "exit": {
+    "floor": 0,
+    "x": 2,
+    "y": 0,
+    "dir": "up"
+  },
+  "vehicles": [
+    {
+      "id": "P",
+      "kind": "player",
+      "floor": 0,
+      "x": 2,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "A",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "B",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 2,
+      "facing": "left"
+    },
+    {
+      "id": "C",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 1,
+      "facing": "left"
+    },
+    {
+      "id": "D",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 3,
+      "facing": "left"
+    },
+    {
+      "id": "F",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 0,
+      "facing": "down"
+    },
+    {
+      "id": "G",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 2,
+      "facing": "right"
+    },
+    {
+      "id": "H",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 1,
+      "facing": "right"
+    },
+    {
+      "id": "I",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 3,
+      "facing": "right"
+    },
+    {
+      "id": "J",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 0,
+      "facing": "right"
+    },
+    {
+      "id": "K",
+      "kind": "car",
+      "floor": 0,
+      "x": 5,
+      "y": 0,
+      "facing": "up"
+    },
+    {
+      "id": "L",
+      "kind": "car",
+      "floor": 0,
+      "x": 1,
+      "y": 3,
+      "facing": "up"
+    }
+  ],
+  "solution": [
+    {
+      "type": "slide",
+      "vehicle": "G",
+      "dir": "left",
+      "distance": 2
+    },
+    {
+      "type": "slide",
+      "vehicle": "J",
+      "dir": "left",
+      "distance": 2
+    },
+    {
+      "type": "slide",
+      "vehicle": "L",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "I",
+      "dir": "left",
+      "distance": 2
+    },
+    {
+      "type": "slide",
+      "vehicle": "D",
+      "dir": "left",
+      "distance": 2
+    },
+    {
+      "type": "slide",
+      "vehicle": "F",
+      "dir": "down",
+      "distance": 4
+    },
+    {
+      "type": "slide",
+      "vehicle": "C",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "D",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "G",
+      "dir": "right",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "P",
+      "dir": "up",
+      "distance": 4
+    }
+  ]
+}

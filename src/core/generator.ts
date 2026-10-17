@@ -25,7 +25,7 @@ export interface GeneratorSettings {
   /** Floor size, default 6x6. */
   width?: number;
   height?: number;
-  /** How many of each vehicle to place, spread over all floors. */
+  /** How many of each vehicle to place, spread over all floors. Any that don't fit are left out. */
   vehicles: Partial<Record<BlockerKind, number>>;
   /** Random pillars per floor. */
   walls?: number;
@@ -39,6 +39,12 @@ export interface GeneratorSettings {
   minPar?: number;
   /** Features the shipped solution must use. Multi-floor levels always require 'ramp'. */
   require?: Feature[];
+  /**
+   * How many floors, from the ground up, start with the player's lane clear (default: all).
+   * The player can only reach those floors; floors above are packed and serve as places to
+   * move blockers to through the ramps, which keeps the number of positions down.
+   */
+  routeFloors?: number;
   /** Only start the player on an upper floor (multi-floor levels). */
   playerUpstairs?: boolean;
   /**
@@ -78,6 +84,7 @@ export interface GeneratedLevel {
 }
 
 const DEFAULT_SIZE = 6;
+const DEFAULT_FLOOR_PRODUCT = 20_000;
 const VEHICLE_IDS = 'ABCDFGHIJKLMNOQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
 // ---------------------------------------------------------------------------
@@ -305,10 +312,10 @@ class Grid {
 
 /**
  * A random garage for the settings. Floors are chained by ramps so the player can always
- * drive from any floor down to the exit lane if the way is clear. Returns null if the
- * vehicles don't fit.
+ * drive from any floor down to the exit lane if the way is clear. Loose floors on
+ * multi-floor layouts get extra vehicles; see `floorProductLimit`.
  */
-export function randomLayout(settings: GeneratorSettings, rng: Rng): LevelDef | null {
+export function randomLayout(settings: GeneratorSettings, rng: Rng): LevelDef {
   const w = settings.width ?? DEFAULT_SIZE;
   const h = settings.height ?? DEFAULT_SIZE;
   const floorCount = settings.floors;
@@ -340,7 +347,9 @@ export function randomLayout(settings: GeneratorSettings, rng: Rng): LevelDef | 
   // The player's lanes stay empty, so the player can reach the exit from anywhere on its
   // route at first. The search later finds positions where blockers have moved in.
   const grid = new Grid(floorCount, w, h);
-  lanes.forEach((lane, f) => {
+  const rampMouths = new Set(ramps.flatMap((r) => [r.a, r.b]).map((e) => `${e.floor}.${e.x}.${e.y}`));
+  const routeFloors = Math.min(settings.routeFloors ?? floorCount, floorCount);
+  lanes.slice(0, routeFloors).forEach((lane, f) => {
     for (let p = 0; p < laneLength; p++) grid.fill(f, horizontalPlayer ? p : lane, horizontalPlayer ? lane : p);
   });
 
@@ -349,7 +358,7 @@ export function randomLayout(settings: GeneratorSettings, rng: Rng): LevelDef | 
     for (let i = 0; i < (settings.walls ?? 0); i++) {
       const x = randInt(rng, 0, w - 1);
       const y = randInt(rng, 0, h - 1);
-      if (!grid.free(f, x, y)) continue;
+      if (!grid.free(f, x, y) || rampMouths.has(`${f}.${x}.${y}`)) continue;
       grid.fill(f, x, y);
       walls.push([x, y]);
     }
@@ -370,31 +379,46 @@ export function randomLayout(settings: GeneratorSettings, rng: Rng): LevelDef | 
     facing: exitSide,
   });
 
-  // Blockers, longest first so they still fit.
-  const kinds: BlockerKind[] = [];
-  for (const [kind, count] of Object.entries(settings.vehicles) as [BlockerKind, number][]) {
-    for (let i = 0; i < count; i++) kinds.push(kind);
-  }
-  kinds.sort((a, b) => VEHICLE_LENGTH[b] - VEHICLE_LENGTH[a]);
-  for (const kind of kinds) {
+  /** Parks a vehicle at a random free spot (on `onFloor` if given). False if none found. */
+  const place = (kind: BlockerKind, onFloor?: number): boolean => {
     const len = VEHICLE_LENGTH[kind];
-    let placed = false;
-    for (let tries = 0; tries < 60 && !placed; tries++) {
-      const floor = randInt(rng, 0, floorCount - 1);
+    for (let tries = 0; tries < 60; tries++) {
+      const floor = onFloor ?? randInt(rng, 0, floorCount - 1);
       const horizontal = rng() < 0.5;
       const x = randInt(rng, 0, horizontal ? w - len : w - 1);
       const y = randInt(rng, 0, horizontal ? h - 1 : h - len);
       if (!grid.tryLine(floor, x, y, horizontal, len)) continue;
       const facing: Dir = horizontal ? pick(rng, ['left', 'right'] as const) : pick(rng, ['up', 'down'] as const);
       vehicles.push({ id: VEHICLE_IDS[vehicles.length - 1] ?? `v${vehicles.length}`, kind, floor, x, y, facing });
-      placed = true;
+      return true;
     }
-    if (!placed) return null;
+    return false;
+  };
+
+  // Blockers, longest first so they still fit. A full floor just takes fewer than asked for.
+  const kinds: BlockerKind[] = [];
+  for (const [kind, count] of Object.entries(settings.vehicles) as [BlockerKind, number][]) {
+    for (let i = 0; i < count; i++) kinds.push(kind);
   }
+  kinds.sort((a, b) => VEHICLE_LENGTH[b] - VEHICLE_LENGTH[a]);
+  for (const kind of kinds) place(kind);
 
   const def: LevelDef = { id: 'random', floors, exit, vehicles };
   if (ramps.length) def.ramps = ramps;
-  if (settings.cranes) def.cranes = settings.cranes;
+
+  // Multi-floor: tighten loose floors by parking extra vehicles (the shortest kind allowed,
+  // never a tow truck) until each floor has at most its share of the position budget.
+  if (floorCount > 1) {
+    const share = Math.floor(Math.pow(settings.floorProductLimit ?? DEFAULT_FLOOR_PRODUCT, 1 / floorCount));
+    const filler = (Object.keys(settings.vehicles) as BlockerKind[])
+      .filter((k) => k !== 'tow' && (settings.vehicles[k] ?? 0) > 0)
+      .sort((a, b) => VEHICLE_LENGTH[a] - VEHICLE_LENGTH[b])[0];
+    for (let f = 0; f < floorCount && filler; f++) {
+      for (let extra = 0; extra < 12; extra++) {
+        if (floorStateCount(compileLevel(def), f, share) <= share || !place(filler, f)) break;
+      }
+    }
+  }
   return def;
 }
 
@@ -422,8 +446,33 @@ export function featuresUsed(level: Level, moves: LevelDef['solution'] = []): Se
   return used;
 }
 
-/** Canonical keys of every position along a solution, start included. */
-function pathKeys(def: LevelDef, level: Level, moves: NonNullable<LevelDef['solution']>): string[] {
+/**
+ * How many solution moves could already be played from the start: each vehicle's first
+ * move, tried on the untouched level. When most moves are like this the level is just a
+ * sweep (shift every blocker once), not a puzzle where moves unlock each other.
+ */
+export function independentMoves(level: Level, moves: LevelDef['solution'] = []): number {
+  const moved = new Set<string>();
+  let free = 0;
+  for (const move of moves) {
+    if (!moved.has(move.vehicle)) {
+      try {
+        applyMove(level, level.initial, move);
+        free++;
+      } catch {
+        // Needs earlier moves first.
+      }
+    }
+    moved.add(move.vehicle);
+  }
+  return free;
+}
+
+/**
+ * Canonical keys of every position along a solution, start included. Two levels sharing
+ * any of these are the same puzzle (one is a later stage of the other).
+ */
+export function pathKeys(def: LevelDef, level: Level = compileLevel(def), moves = def.solution ?? []): string[] {
   const keys = [canonicalKey(def)];
   let state = level.initial;
   for (const move of moves) {
@@ -443,7 +492,8 @@ function pathKeys(def: LevelDef, level: Level, moves: NonNullable<LevelDef['solu
  * and works out the distance to a win from each. A position at the target distance
  * becomes the level's start, so hard levels don't rely on luck. (When the layout has too
  * many positions to explore them all, distances are upper bounds and the solver decides.)
- * The pick is re-solved from scratch and rejected if its par is off target or trivial,
+ * The pick is re-solved from scratch and rejected if its par is off target or trivial
+ * (too short, or most of its moves could be played straight away in any order),
  * it misses a required feature, the solver needs too long, or any position on its
  * solution already belongs to a level in `seen`.
  */
@@ -460,7 +510,7 @@ export function generateLevel(settings: GeneratorSettings, options: GenerateOpti
   const minPar = Math.max(1, settings.minPar ?? 2);
   const tolerance = settings.parTolerance ?? 0;
   const lo = Math.max(minPar, settings.targetPar - tolerance);
-  const hi = settings.targetPar + tolerance;
+  const hi = Math.max(lo, settings.targetPar + tolerance);
   const cranes = settings.cranes ?? 0;
   const required = new Set<Feature>(settings.require ?? []);
   if (settings.floors > 1) required.add('ramp');
@@ -468,10 +518,6 @@ export function generateLevel(settings: GeneratorSettings, options: GenerateOpti
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const layout = randomLayout(settings, rng);
-    if (!layout) {
-      reject('vehicles did not fit');
-      continue;
-    }
     let level: Level;
     try {
       level = compileLevel(layout);
@@ -484,7 +530,7 @@ export function generateLevel(settings: GeneratorSettings, options: GenerateOpti
     }
 
     if (settings.floors > 1) {
-      const limit = settings.floorProductLimit ?? 20_000;
+      const limit = settings.floorProductLimit ?? DEFAULT_FLOOR_PRODUCT;
       let product = 1;
       for (let f = 0; f < settings.floors && product <= limit; f++) {
         product *= floorStateCount(level, f, Math.ceil(limit / product));
@@ -495,39 +541,49 @@ export function generateLevel(settings: GeneratorSettings, options: GenerateOpti
       }
     }
 
+    // Layouts are explored without cranes: a crane drop can go almost anywhere, which
+    // would multiply the positions. The crane is added to the chosen start instead.
     const graph = exploreStates(level, level.initial, exploreLimit);
     const dist = distancesToGoal(level, graph);
-    // In a truncated graph the real par can be lower than measured, so look a bit higher.
-    const reach = graph.truncated ? hi + 4 : hi;
+    if (graph.truncated) reject('layout too big to explore fully');
 
-    // Starting positions at the wanted distance, closest to the target first.
+    // Without the crane the start must be harder than the target, so look further out.
+    // In a truncated graph distances are upper bounds, so look further still.
+    const from = cranes > 0 ? lo + 1 : lo;
+    const to = hi + (cranes > 0 ? 10 : 0) + (graph.truncated ? 4 : 0);
+    const want = cranes > 0 ? settings.targetPar + 4 : settings.targetPar;
     const candidates: number[] = [];
     for (let i = 0; i < dist.length; i++) {
       const d = dist[i]!;
-      const s = graph.states[i]!;
-      if (d < lo || d > reach || s.cranesLeft !== cranes) continue;
-      if (settings.playerUpstairs && (s.vehicles[level.playerIndex]?.floor ?? 0) === 0) continue;
+      if (d < from || d > to) continue;
+      if (settings.playerUpstairs && (graph.states[i]!.vehicles[level.playerIndex]?.floor ?? 0) === 0) continue;
       candidates.push(i);
     }
-    if (graph.truncated) reject('layout too big to explore fully');
     if (candidates.length === 0) reject('no position at target par');
-    shuffle(rng, candidates).sort((a, b) => Math.abs(dist[a]! - settings.targetPar) - Math.abs(dist[b]! - settings.targetPar));
+    shuffle(rng, candidates).sort((a, b) => Math.abs(dist[a]! - want) - Math.abs(dist[b]! - want));
 
     for (const c of candidates.slice(0, 6)) {
       const def: LevelDef = withState(layout, graph.states[c]!);
       def.id = options.id ?? 'generated';
       if (options.name) def.name = options.name;
+      if (cranes > 0) def.cranes = cranes;
+      else delete def.cranes;
       const start = compileLevel(def);
       const result = solve(start, start.initial, { maxStates: solveLimit });
       if (result.truncated) {
         reject('too slow to solve');
         continue;
       }
-      if (!graph.truncated && result.par !== dist[c]) {
+      if (cranes === 0 && !graph.truncated && result.par !== dist[c]) {
         throw new Error(`generator and solver disagree (${dist[c]} vs ${result.par})`);
       }
       if (result.par < lo || result.par > hi) {
         reject(result.par < minPar ? 'trivial' : 'par off target');
+        continue;
+      }
+
+      if (result.par >= 4 && independentMoves(start, result.moves) * 2 > result.par) {
+        reject('trivial');
         continue;
       }
 
@@ -540,8 +596,12 @@ export function generateLevel(settings: GeneratorSettings, options: GenerateOpti
 
       if (cranes > 0) {
         // The crane must matter: without it the level is longer or impossible.
-        const without = solve(compileLevel({ ...def, cranes: 0 }), undefined, { maxStates: solveLimit });
-        if (without.truncated || (without.solvable && without.par <= result.par)) {
+        let withoutPar = dist[c]!;
+        if (graph.truncated) {
+          const without = solve(compileLevel({ ...def, cranes: 0 }), undefined, { maxStates: solveLimit });
+          withoutPar = without.truncated ? 0 : without.solvable ? without.par : Infinity;
+        }
+        if (withoutPar <= result.par) {
           reject('crane not needed');
           continue;
         }
