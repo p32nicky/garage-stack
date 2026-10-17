@@ -1,0 +1,356 @@
+{
+  "id": "034",
+  "name": "Level 34",
+  "par": 9,
+  "difficulty": 13.5,
+  "floors": [
+    {
+      "width": 6,
+      "height": 6,
+      "walls": [
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "walls": [
+        [
+          4,
+          0
+        ]
+      ]
+    }
+  ],
+  "exit": {
+    "floor": 0,
+    "x": 5,
+    "y": 1,
+    "dir": "right"
+  },
+  "vehicles": [
+    {
+      "id": "P",
+      "kind": "player",
+      "floor": 1,
+      "x": 0,
+      "y": 1,
+      "facing": "left"
+    },
+    {
+      "id": "A",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 3,
+      "facing": "right"
+    },
+    {
+      "id": "B",
+      "kind": "car",
+      "floor": 1,
+      "x": 1,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "C",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "D",
+      "kind": "car",
+      "floor": 1,
+      "x": 1,
+      "y": 3,
+      "facing": "right"
+    },
+    {
+      "id": "F",
+      "kind": "car",
+      "floor": 1,
+      "x": 3,
+      "y": 2,
+      "facing": "up"
+    },
+    {
+      "id": "G",
+      "kind": "car",
+      "floor": 1,
+      "x": 4,
+      "y": 5,
+      "facing": "right"
+    },
+    {
+      "id": "H",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 1,
+      "facing": "down"
+    },
+    {
+      "id": "I",
+      "kind": "car",
+      "floor": 1,
+      "x": 0,
+      "y": 2,
+      "facing": "up"
+    },
+    {
+      "id": "J",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 0,
+      "facing": "left"
+    },
+    {
+      "id": "K",
+      "kind": "car",
+      "floor": 1,
+      "x": 2,
+      "y": 0,
+      "facing": "right"
+    },
+    {
+      "id": "L",
+      "kind": "car",
+      "floor": 1,
+      "x": 4,
+      "y": 4,
+      "facing": "left"
+    },
+    {
+      "id": "M",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 3,
+      "facing": "up"
+    },
+    {
+      "id": "N",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 0,
+      "facing": "right"
+    },
+    {
+      "id": "O",
+      "kind": "car",
+      "floor": 0,
+      "x": 3,
+      "y": 1,
+      "facing": "up"
+    },
+    {
+      "id": "Q",
+      "kind": "car",
+      "floor": 0,
+      "x": 3,
+      "y": 5,
+      "facing": "right"
+    },
+    {
+      "id": "R",
+      "kind": "car",
+      "floor": 1,
+      "x": 2,
+      "y": 4,
+      "facing": "down"
+    },
+    {
+      "id": "S",
+      "kind": "car",
+      "floor": 1,
+      "x": 0,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "T",
+      "kind": "car",
+      "floor": 0,
+      "x": 0,
+      "y": 0,
+      "facing": "right"
+    },
+    {
+      "id": "U",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 3,
+      "facing": "up"
+    },
+    {
+      "id": "V",
+      "kind": "car",
+      "floor": 1,
+      "x": 0,
+      "y": 0,
+      "facing": "left"
+    },
+    {
+      "id": "W",
+      "kind": "car",
+      "floor": 1,
+      "x": 5,
+      "y": 2,
+      "facing": "down"
+    },
+    {
+      "id": "X",
+      "kind": "car",
+      "floor": 0,
+      "x": 4,
+      "y": 2,
+      "facing": "right"
+    },
+    {
+      "id": "Y",
+      "kind": "car",
+      "floor": 1,
+      "x": 3,
+      "y": 4,
+      "facing": "up"
+    },
+    {
+      "id": "Z",
+      "kind": "car",
+      "floor": 1,
+      "x": 4,
+      "y": 1,
+      "facing": "right"
+    },
+    {
+      "id": "a",
+      "kind": "car",
+      "floor": 1,
+      "x": 1,
+      "y": 2,
+      "facing": "right"
+    },
+    {
+      "id": "b",
+      "kind": "car",
+      "floor": 1,
+      "x": 4,
+      "y": 2,
+      "facing": "up"
+    },
+    {
+      "id": "c",
+      "kind": "car",
+      "floor": 0,
+      "x": 5,
+      "y": 3,
+      "facing": "up"
+    },
+    {
+      "id": "d",
+      "kind": "car",
+      "floor": 1,
+      "x": 2,
+      "y": 1,
+      "facing": "left"
+    },
+    {
+      "id": "e",
+      "kind": "car",
+      "floor": 0,
+      "x": 1,
+      "y": 4,
+      "facing": "down"
+    },
+    {
+      "id": "f",
+      "kind": "car",
+      "floor": 0,
+      "x": 2,
+      "y": 4,
+      "facing": "left"
+    }
+  ],
+  "ramps": [
+    {
+      "a": {
+        "floor": 1,
+        "x": 0,
+        "y": 1,
+        "dir": "left"
+      },
+      "b": {
+        "floor": 0,
+        "x": 0,
+        "y": 1,
+        "dir": "left"
+      }
+    }
+  ],
+  "solution": [
+    {
+      "type": "slide",
+      "vehicle": "M",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "H",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "Q",
+      "dir": "left",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "U",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "c",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "A",
+      "dir": "right",
+      "distance": 2
+    },
+    {
+      "type": "slide",
+      "vehicle": "C",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "O",
+      "dir": "down",
+      "distance": 1
+    },
+    {
+      "type": "slide",
+      "vehicle": "P",
+      "dir": "left",
+      "distance": 6
+    }
+  ]
+}

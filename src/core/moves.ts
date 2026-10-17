@@ -89,22 +89,25 @@ function slideSuccessors(level: Level, state: GameState, occ: Int16Array, index:
     let ok = true;
     for (const p of pieces) {
       const len = level.lengths[p] ?? 0;
-      const cells = path.slice(offset, offset + len);
-      offset += len;
-      const first = cells[0];
-      const last = cells[cells.length - 1];
+      const first = path[offset];
+      const last = path[offset + len - 1];
       const start = state.vehicles[p];
-      if (!first || !last || !start || cells.some((c) => c.floor !== first.floor)) {
+      if (!first || !last || !start) {
         ok = false;
         break;
       }
+      let x = first.x;
+      let y = first.y;
+      for (let k = offset + 1; k < offset + len; k++) {
+        const c = path[k] as Step;
+        if (c.floor !== first.floor) ok = false;
+        if (c.x < x) x = c.x;
+        if (c.y < y) y = c.y;
+      }
+      offset += len;
+      if (!ok) break;
       const movedForward = dir === start.facing;
-      placed.push({
-        floor: first.floor,
-        x: Math.min(...cells.map((c) => c.x)),
-        y: Math.min(...cells.map((c) => c.y)),
-        facing: movedForward ? last.dir : opposite(last.dir),
-      });
+      placed.push({ floor: first.floor, x, y, facing: movedForward ? last.dir : opposite(last.dir) });
     }
     if (!ok) continue;
 
