@@ -64,6 +64,10 @@ export interface LevelDef {
   cranes?: number;
   /** Minimum moves, filled in by the solver/generator. */
   par?: number;
+  /** Difficulty score from the generator (par plus a search-size bonus). Higher is harder. */
+  difficulty?: number;
+  /** One optimal solution (`par` moves), shipped so hints don't need to run the solver. */
+  solution?: Move[];
 }
 
 /** Dynamic position of one vehicle. */

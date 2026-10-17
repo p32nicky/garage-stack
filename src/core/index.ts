@@ -5,3 +5,5 @@ export * from './state';
 export * from './moves';
 export * from './solver';
 export * from './debug';
+export * from './random';
+export * from './generator';
